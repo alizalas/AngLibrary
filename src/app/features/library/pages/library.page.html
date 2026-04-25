@@ -1,0 +1,101 @@
+<section class="library-page" aria-labelledby="library-title">
+  <app-section-header
+    title="Library"
+    subtitle="Manage your books, statuses, notes, quotes and genres."
+  />
+
+  <section class="controls" tuiForm="m" aria-label="Filters and sorting">
+    <tui-textfield>
+      <label tuiLabel>Search</label>
+      <input
+        tuiTextfield
+        [value]="store.filters().query"
+        placeholder="Title, author or publisher"
+        (input)="setQuery($any($event.target).value)"
+      />
+    </tui-textfield>
+
+    <tui-textfield>
+      <label tuiLabel>Status</label>
+      <select tuiTextfield [value]="store.filters().status" (change)="setStatus($any($event.target).value)">
+        @for (option of statusOptions; track option.value) {
+          <option [value]="option.value">{{ option.label }}</option>
+        }
+      </select>
+    </tui-textfield>
+
+    <tui-textfield>
+      <label tuiLabel>Genre</label>
+      <select tuiTextfield [value]="store.filters().genreId" (change)="setGenre($any($event.target).value)">
+        <option value="all">All genres</option>
+        @for (genre of store.genres(); track genre.id) {
+          <option [value]="genre.id">{{ genre.name }}</option>
+        }
+      </select>
+    </tui-textfield>
+
+    <tui-textfield>
+      <label tuiLabel>Sort</label>
+      <select tuiTextfield [value]="store.sort()" (change)="setSort($any($event.target).value)">
+        @for (option of sortOptions; track option.value) {
+          <option [value]="option.value">{{ option.label }}</option>
+        }
+      </select>
+    </tui-textfield>
+  </section>
+
+  <div class="toolbar">
+    <button tuiButton type="button" appearance="primary" (click)="openCreateForm()">Add book</button>
+    @if (formVisible()) {
+      <button tuiButton type="button" appearance="outline" (click)="closeForm()">Close form</button>
+    }
+  </div>
+
+  @if (formVisible()) {
+    <app-book-form [book]="editingBook()" [genres]="store.genres()" (saved)="save($event)" (cancel)="closeForm()" />
+  }
+
+  @if (store.loading().books && !store.initialized()) {
+    <app-page-loader label="Loading books..." />
+  } @else if (!store.filteredBooks().length) {
+    <app-empty-state title="No books found" description="Add your first book or change filters." />
+  } @else {
+    <ul class="books-list" role="list">
+      @for (book of store.filteredBooks(); track book.id) {
+        <li class="book-card" role="listitem">
+          <header class="book-card__head">
+            <div>
+              <h3>{{ book.title }}</h3>
+              <p>{{ book.author }} • {{ book.year }} • {{ book.publisher }}</p>
+            </div>
+            <div class="book-card__meta">
+              <span class="status" [class]="'status status--' + book.status">
+                {{ statusLabel(book.status) }}
+              </span>
+              @if (book.rating) {
+                <span class="rating" aria-label="Rating">★ {{ book.rating }}/5</span>
+              }
+            </div>
+          </header>
+
+          <p class="genres">Genres: {{ genresLabel(book.genres) }}</p>
+
+          @if (book.notes) {
+            <p><strong>Notes:</strong> {{ book.notes }}</p>
+          }
+
+          @if (book.quotes) {
+            <p><strong>Quotes:</strong> {{ book.quotes }}</p>
+          }
+
+          <footer class="book-card__actions">
+            <button tuiButton type="button" size="s" appearance="outline" (click)="edit(book)">Edit</button>
+            <button tuiButton type="button" size="s" appearance="flat-destructive" (click)="remove(book.id, book.title)">
+              Delete
+            </button>
+          </footer>
+        </li>
+      }
+    </ul>
+  }
+</section>

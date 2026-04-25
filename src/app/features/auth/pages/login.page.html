@@ -1,0 +1,52 @@
+<main class="auth-layout">
+  <section class="auth-card" tuiForm="m" aria-labelledby="login-title">
+    <header>
+      <h1 id="login-title">Sign in</h1>
+      <p>Use demo account: <code>anna / anna123</code> or <code>ivan / ivan123</code>.</p>
+    </header>
+
+    <app-error-banner [message]="authStore.error()" (close)="clearError()" />
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <tui-textfield>
+        <label tuiLabel>Username</label>
+        <input
+          tuiTextfield
+          formControlName="username"
+          autocomplete="username"
+          [attr.aria-invalid]="isInvalid('username')"
+        />
+      </tui-textfield>
+
+      @if (isInvalid('username')) {
+        <p class="field-error">Username is required.</p>
+      }
+
+      <tui-textfield>
+        <label tuiLabel>Password</label>
+        <input
+          tuiTextfield
+          formControlName="password"
+          type="password"
+          autocomplete="current-password"
+          [attr.aria-invalid]="isInvalid('password')"
+        />
+      </tui-textfield>
+
+      @if (isInvalid('password')) {
+        <p class="field-error">Password should contain at least 6 symbols.</p>
+      }
+
+      <button tuiButton type="submit" appearance="primary" [disabled]="form.invalid || authStore.loading()">
+        <tui-loader [showLoader]="authStore.loading()" size="xs" [inheritColor]="true">
+          Login
+        </tui-loader>
+      </button>
+    </form>
+
+    <footer>
+      <span>No account yet?</span>
+      <a tuiLink [routerLink]="['/auth/register']">Create one</a>
+    </footer>
+  </section>
+</main>

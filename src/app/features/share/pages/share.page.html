@@ -1,0 +1,27 @@
+<section class="share-page" aria-labelledby="share-title">
+  <app-section-header
+    title="Share library"
+    subtitle="Generate and copy public read-only link to your library."
+  />
+
+  <article class="share-card">
+    <h3>Your public link</h3>
+
+    @if (shareUrl(); as url) {
+      <p class="share-url">{{ url }}</p>
+
+      <div class="actions">
+        <button tuiButton type="button" appearance="primary" (click)="copy(url)">Copy link</button>
+        <a tuiButton appearance="outline" [href]="url" target="_blank" rel="noreferrer">
+          Open shared page
+        </a>
+      </div>
+
+      @if (copied()) {
+        <p class="hint" role="status" aria-live="polite">Link copied to clipboard.</p>
+      }
+    } @else {
+      <p class="hint">Login required to generate share link.</p>
+    }
+  </article>
+</section>

@@ -1,0 +1,78 @@
+<section class="recommendations-page" aria-labelledby="recommendations-title">
+  <app-section-header
+    title="Recommendations"
+    subtitle="Create and manage your recommendation lists."
+  />
+
+  <section class="recommendation-form" tuiForm="m">
+    <h3>{{ editingId() ? 'Edit list' : 'New list' }}</h3>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <tui-textfield>
+        <label tuiLabel>List name</label>
+        <input tuiTextfield formControlName="name" />
+      </tui-textfield>
+
+      <tui-textfield>
+        <label tuiLabel>Description</label>
+        <input tuiTextfield formControlName="description" />
+      </tui-textfield>
+
+      <fieldset class="books-select">
+        <legend>Books in list</legend>
+        <div class="books-grid">
+          @for (book of store.books(); track book.id) {
+            <label class="book-option">
+              <input
+                type="checkbox"
+                [checked]="isBookSelected(book.id)"
+                (change)="toggleBook(book.id, $any($event.target).checked)"
+              />
+              <span>{{ book.title }}</span>
+            </label>
+          }
+        </div>
+      </fieldset>
+
+      <div class="actions">
+        @if (editingId()) {
+          <button tuiButton type="button" appearance="outline" (click)="resetForm()">Cancel</button>
+        }
+        <button tuiButton type="submit" appearance="primary" [disabled]="form.invalid">
+          {{ editingId() ? 'Save' : 'Create' }}
+        </button>
+      </div>
+    </form>
+  </section>
+
+  @if (!store.recommendations().length) {
+    <app-empty-state title="No recommendation lists yet" description="Create your first recommendation list above." />
+  } @else {
+    <ul class="recommendations-list" role="list">
+      @for (list of store.recommendations(); track list.id) {
+        <li class="recommendation-card" role="listitem">
+          <header>
+            <h3>{{ list.name }}</h3>
+            <p>{{ list.description || 'No description' }}</p>
+          </header>
+
+          <p class="books-line">
+            Books:
+            @if (booksInList(list).length) {
+              {{ booksInList(list).join(', ') }}
+            } @else {
+              none
+            }
+          </p>
+
+          <footer>
+            <button tuiButton type="button" size="s" appearance="outline" (click)="edit(list)">Edit</button>
+            <button tuiButton type="button" size="s" appearance="flat-destructive" (click)="remove(list.id, list.name)">
+              Delete
+            </button>
+          </footer>
+        </li>
+      }
+    </ul>
+  }
+</section>

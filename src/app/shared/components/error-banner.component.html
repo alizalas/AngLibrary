@@ -1,0 +1,11 @@
+@if (message) {
+  <tui-notification class="error-wrap" appearance="negative" icon="@tui.alert-circle">
+    <div class="error-content">
+      <strong>Request error:</strong>
+      <span>{{ message }}</span>
+    </div>
+    <button tuiButton type="button" size="s" appearance="flat-grayscale" (click)="close.emit()">
+      Dismiss
+    </button>
+  </tui-notification>
+}

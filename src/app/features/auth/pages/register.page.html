@@ -1,0 +1,66 @@
+<main class="auth-layout">
+  <section class="auth-card" tuiForm="m" aria-labelledby="register-title">
+    <header>
+      <h1 id="register-title">Create account</h1>
+      <p>Account is isolated by user id and protected with jwt-like token.</p>
+    </header>
+
+    <app-error-banner [message]="authStore.error()" (close)="clearError()" />
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <tui-textfield>
+        <label tuiLabel>Full name</label>
+        <input
+          tuiTextfield
+          formControlName="fullName"
+          autocomplete="name"
+          [attr.aria-invalid]="isInvalid('fullName')"
+        />
+      </tui-textfield>
+
+      @if (isInvalid('fullName')) {
+        <p class="field-error">Full name is required.</p>
+      }
+
+      <tui-textfield>
+        <label tuiLabel>Username</label>
+        <input
+          tuiTextfield
+          formControlName="username"
+          autocomplete="username"
+          [attr.aria-invalid]="isInvalid('username')"
+        />
+      </tui-textfield>
+
+      @if (isInvalid('username')) {
+        <p class="field-error">Username is required and should be at least 3 symbols.</p>
+      }
+
+      <tui-textfield>
+        <label tuiLabel>Password</label>
+        <input
+          tuiTextfield
+          formControlName="password"
+          type="password"
+          autocomplete="new-password"
+          [attr.aria-invalid]="isInvalid('password')"
+        />
+      </tui-textfield>
+
+      @if (isInvalid('password')) {
+        <p class="field-error">Password should be at least 6 symbols.</p>
+      }
+
+      <button tuiButton type="submit" appearance="primary" [disabled]="form.invalid || authStore.loading()">
+        <tui-loader [showLoader]="authStore.loading()" size="xs" [inheritColor]="true">
+          Create account
+        </tui-loader>
+      </button>
+    </form>
+
+    <footer>
+      <span>Already registered?</span>
+      <a tuiLink [routerLink]="['/auth/login']">Go to login</a>
+    </footer>
+  </section>
+</main>

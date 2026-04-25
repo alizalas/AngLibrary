@@ -1,0 +1,36 @@
+<header class="app-header">
+  <div class="brand-wrap">
+    <h1 tuiHeader="h4">LibraryFlow</h1>
+    <p>Personal reading tracker</p>
+  </div>
+
+  <div class="header-actions">
+    <button tuiButton size="s" type="button" appearance="flat-grayscale" (click)="goToShare()">
+      Share
+    </button>
+    <button tuiButton size="s" type="button" appearance="outline" (click)="logout()">
+      Logout
+    </button>
+  </div>
+</header>
+
+<main class="app-main">
+  <aside class="app-aside" aria-label="Main navigation">
+    <nav class="app-nav">
+      @for (item of navItems; track item.path) {
+        <a
+          [routerLink]="item.path"
+          [class.active]="isActive(item.path)"
+          [attr.aria-current]="isActive(item.path) ? 'page' : null"
+        >
+          {{ item.label }}
+        </a>
+      }
+    </nav>
+  </aside>
+
+  <section class="content">
+    <app-error-banner [message]="apiError()" (close)="dismissError()" />
+    <router-outlet></router-outlet>
+  </section>
+</main>

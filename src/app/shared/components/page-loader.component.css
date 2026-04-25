@@ -1,0 +1,6 @@
+.loader-wrap {
+  display: grid;
+  place-items: center;
+  min-height: 240px;
+  padding: 1rem;
+}

@@ -1,0 +1,54 @@
+.auth-layout {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background:
+    radial-gradient(circle at 80% 15%, rgba(255, 151, 93, 0.26), transparent 44%),
+    radial-gradient(circle at 12% 85%, rgba(81, 170, 255, 0.24), transparent 40%),
+    linear-gradient(160deg, #fbfcff 0%, #f3f8ef 100%);
+}
+
+.auth-card {
+  width: min(100%, 460px);
+  border-radius: 1.25rem;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+  padding: 1.25rem;
+  display: grid;
+  gap: 1rem;
+}
+
+header {
+  display: grid;
+  gap: 0.3rem;
+}
+
+h1,
+p {
+  margin: 0;
+}
+
+p {
+  color: rgba(0, 0, 0, 0.65);
+}
+
+form {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.field-error {
+  margin: -0.2rem 0 0;
+  color: #b3261e;
+  font-size: 0.82rem;
+}
+
+footer {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  color: rgba(0, 0, 0, 0.72);
+  font-size: 0.9rem;
+}

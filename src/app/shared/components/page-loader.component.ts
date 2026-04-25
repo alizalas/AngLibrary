@@ -4,19 +4,8 @@ import { TuiLoader } from '@taiga-ui/core/components/loader';
 @Component({
   selector: 'app-page-loader',
   imports: [TuiLoader],
-  template: `
-    <section class="loader-wrap" [attr.aria-label]="label">
-      <tui-loader [showLoader]="true" size="l">{{ label }}</tui-loader>
-    </section>
-  `,
-  styles: `
-    .loader-wrap {
-      display: grid;
-      place-items: center;
-      min-height: 240px;
-      padding: 1rem;
-    }
-  `,
+  templateUrl: './page-loader.component.html',
+  styleUrl: './page-loader.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PageLoaderComponent {

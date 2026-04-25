@@ -1,0 +1,37 @@
+<main class="shared-page" aria-labelledby="shared-title">
+  <app-section-header
+    title="Shared library"
+    subtitle="Read-only public view of books."
+  />
+
+  <div class="shared-actions">
+    <a tuiButton appearance="outline" [routerLink]="['/auth/login']">Go to login</a>
+  </div>
+
+  @if (loading()) {
+    <app-page-loader label="Loading shared books..." />
+  } @else if (error()) {
+    <app-empty-state title="Cannot open shared library" [description]="error() || ''" />
+  } @else if (!books().length) {
+    <app-empty-state title="No books in shared library" description="This user has no public books yet." />
+  } @else {
+    <ul class="shared-books" role="list">
+      @for (book of books(); track book.id) {
+        <li class="shared-book" role="listitem">
+          <h3>{{ book.title }}</h3>
+          <p>{{ book.author }} • {{ book.year }} • {{ book.publisher }}</p>
+          <p>
+            <strong>Status:</strong> {{ statusLabel(book.status) }}
+            @if (book.rating) {
+              <span> • <strong>Rating:</strong> {{ book.rating }}/5</span>
+            }
+          </p>
+          <p><strong>Genres:</strong> {{ book.genres.join(', ') || 'n/a' }}</p>
+          @if (book.quotes) {
+            <p><strong>Quote:</strong> {{ book.quotes }}</p>
+          }
+        </li>
+      }
+    </ul>
+  }
+</main>

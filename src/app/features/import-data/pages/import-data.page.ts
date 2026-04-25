@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
-import { DatePipe } from '@angular/common';
 import { TuiButton } from '@taiga-ui/core/components/button';
 import { TuiTextfield } from '@taiga-ui/core/components/textfield';
 import { TuiForm } from '@taiga-ui/layout/components/form';
@@ -34,121 +34,8 @@ interface ImportForm {
     TuiTextarea,
     SectionHeaderComponent
   ],
-  template: `
-    <section class="import-page" aria-labelledby="import-title">
-      <app-section-header
-        title="Import data"
-        subtitle="Import books from JSON and review import history."
-      />
-
-      <section class="import-form" tuiForm="m">
-        <h3>JSON import</h3>
-
-        <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
-          <tui-textfield>
-            <label tuiLabel>Source</label>
-            <select tuiTextfield formControlName="source">
-              <option value="json">json</option>
-              <option value="csv">csv</option>
-              <option value="manual">manual</option>
-            </select>
-          </tui-textfield>
-
-          <tui-textfield>
-            <label tuiLabel>Payload</label>
-            <textarea
-              tuiTextarea
-              formControlName="payload"
-              rows="8"
-              placeholder='[{"title":"Book","author":"Name","year":2020,"publisher":"Pub","genres":["g-classic"],"status":"planned","rating":null,"notes":"","quotes":""}]'
-            ></textarea>
-          </tui-textfield>
-
-          @if (parseError) {
-            <p class="error">{{ parseError }}</p>
-          }
-
-          <button tuiButton type="submit" appearance="primary" [disabled]="store.loading().imports">
-            Import books
-          </button>
-        </form>
-      </section>
-
-      <section class="import-history">
-        <h3>Import history</h3>
-
-        @if (!store.imports().length) {
-          <p class="muted">No imports yet.</p>
-        } @else {
-          <ul role="list">
-            @for (item of store.imports(); track item.id) {
-              <li>
-                <span>{{ item.importedAt | date: 'medium' }}</span>
-                <strong>{{ item.source }}</strong>
-                <span>{{ item.importedBooks }} books</span>
-              </li>
-            }
-          </ul>
-        }
-      </section>
-    </section>
-  `,
-  styles: `
-    .import-page {
-      display: grid;
-      gap: 1rem;
-    }
-
-    .import-form,
-    .import-history {
-      display: grid;
-      gap: 0.75rem;
-      border: 1px solid rgba(0, 0, 0, 0.08);
-      border-radius: 1rem;
-      background: rgba(255, 255, 255, 0.92);
-      padding: 1rem;
-    }
-
-    .import-form h3,
-    .import-history h3 {
-      margin: 0;
-    }
-
-    form {
-      display: grid;
-      gap: 0.75rem;
-    }
-
-    .error {
-      margin: 0;
-      color: #b3261e;
-    }
-
-    .muted {
-      margin: 0;
-      color: rgba(0, 0, 0, 0.65);
-    }
-
-    ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: grid;
-      gap: 0.5rem;
-    }
-
-    li {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      align-items: center;
-      justify-content: space-between;
-      border: 1px solid rgba(0, 0, 0, 0.06);
-      border-radius: 0.7rem;
-      padding: 0.6rem 0.75rem;
-      background: rgba(255, 255, 255, 0.95);
-    }
-  `,
+  templateUrl: './import-data.page.html',
+  styleUrl: './import-data.page.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ImportDataPage {

@@ -2,3 +2,8 @@
   display: block;
   min-height: 100dvh;
 }
+
+tui-root {
+  display: block;
+  min-height: 100dvh;
+}

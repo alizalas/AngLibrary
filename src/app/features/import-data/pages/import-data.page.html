@@ -1,0 +1,57 @@
+<section class="import-page" aria-labelledby="import-title">
+  <app-section-header
+    title="Import data"
+    subtitle="Import books from JSON and review import history."
+  />
+
+  <section class="import-form" tuiForm="m">
+    <h3>JSON import</h3>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <tui-textfield>
+        <label tuiLabel>Source</label>
+        <select tuiTextfield formControlName="source">
+          <option value="json">json</option>
+          <option value="csv">csv</option>
+          <option value="manual">manual</option>
+        </select>
+      </tui-textfield>
+
+      <tui-textfield>
+        <label tuiLabel>Payload</label>
+        <textarea
+          tuiTextarea
+          formControlName="payload"
+          rows="8"
+          placeholder='[{"title":"Book","author":"Name","year":2020,"publisher":"Pub","genres":["g-classic"],"status":"planned","rating":null,"notes":"","quotes":""}]'
+        ></textarea>
+      </tui-textfield>
+
+      @if (parseError) {
+        <p class="error">{{ parseError }}</p>
+      }
+
+      <button tuiButton type="submit" appearance="primary" [disabled]="store.loading().imports">
+        Import books
+      </button>
+    </form>
+  </section>
+
+  <section class="import-history">
+    <h3>Import history</h3>
+
+    @if (!store.imports().length) {
+      <p class="muted">No imports yet.</p>
+    } @else {
+      <ul role="list">
+        @for (item of store.imports(); track item.id) {
+          <li>
+            <span>{{ item.importedAt | date: 'medium' }}</span>
+            <strong>{{ item.source }}</strong>
+            <span>{{ item.importedBooks }} books</span>
+          </li>
+        }
+      </ul>
+    }
+  </section>
+</section>

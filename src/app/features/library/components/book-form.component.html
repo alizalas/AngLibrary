@@ -1,0 +1,93 @@
+<section class="book-form" tuiForm="m" aria-labelledby="book-form-title">
+  <header class="book-form__head">
+    <h3 id="book-form-title">{{ book ? 'Edit book' : 'Add book' }}</h3>
+    <p>Fill metadata, reading status, notes and key quotes.</p>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <div class="book-form__row">
+      <tui-textfield>
+        <label tuiLabel>Title</label>
+        <input tuiTextfield formControlName="title" />
+      </tui-textfield>
+
+      <tui-textfield>
+        <label tuiLabel>Author</label>
+        <input tuiTextfield formControlName="author" />
+      </tui-textfield>
+    </div>
+
+    <div class="book-form__row">
+      <tui-textfield>
+        <label tuiLabel>Year</label>
+        <input tuiTextfield type="number" formControlName="year" [min]="yearMin" [max]="yearMax" />
+      </tui-textfield>
+
+      <tui-textfield>
+        <label tuiLabel>Publisher</label>
+        <input tuiTextfield formControlName="publisher" />
+      </tui-textfield>
+    </div>
+
+    <div class="book-form__row">
+      <tui-textfield>
+        <label tuiLabel>Status</label>
+        <select tuiTextfield formControlName="status" (change)="onStatusChanged()">
+          @for (status of statusOptions; track status.value) {
+            <option [value]="status.value">{{ status.label }}</option>
+          }
+        </select>
+      </tui-textfield>
+
+      <tui-textfield>
+        <label tuiLabel>Rating (1-5)</label>
+        <input
+          tuiTextfield
+          type="number"
+          formControlName="rating"
+          min="1"
+          max="5"
+          [readonly]="form.controls.status.value !== 'finished'"
+        />
+      </tui-textfield>
+    </div>
+
+    <fieldset class="genres-group">
+      <legend>Genres</legend>
+      <div class="genres-grid">
+        @for (genre of genres; track genre.id) {
+          <label class="genre-item">
+            <input
+              tuiCheckbox
+              type="checkbox"
+              [checked]="isGenreSelected(genre.id)"
+              (change)="toggleGenre(genre.id, $any($event.target).checked)"
+            />
+            <span>{{ genre.name }}</span>
+          </label>
+        }
+      </div>
+    </fieldset>
+
+    <tui-textfield>
+      <label tuiLabel>Notes</label>
+      <textarea tuiTextarea formControlName="notes" rows="3"></textarea>
+    </tui-textfield>
+
+    <tui-textfield>
+      <label tuiLabel>Quotes</label>
+      <textarea tuiTextarea formControlName="quotes" rows="3"></textarea>
+    </tui-textfield>
+
+    @if (form.invalid && submitted) {
+      <p class="form-error">Please fill required fields and check numeric ranges.</p>
+    }
+
+    <div class="book-form__actions">
+      <button tuiButton type="button" appearance="outline" (click)="cancel.emit()">Cancel</button>
+      <button tuiButton type="submit" appearance="primary">
+        {{ book ? 'Save changes' : 'Create book' }}
+      </button>
+    </div>
+  </form>
+</section>

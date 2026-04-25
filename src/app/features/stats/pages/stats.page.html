@@ -1,0 +1,62 @@
+<section class="stats-page" aria-labelledby="stats-title">
+  <app-section-header
+    title="Reading stats"
+    subtitle="Track progress and finished books for selected period."
+  />
+
+  <section class="stats-grid">
+    <article class="stat-card">
+      <h3>Total books</h3>
+      <p>{{ store.books().length }}</p>
+    </article>
+
+    <article class="stat-card">
+      <h3>Read progress</h3>
+      <p>{{ store.readProgress() }}%</p>
+    </article>
+
+    <article class="stat-card">
+      <h3>Finished in period</h3>
+      <p>{{ store.periodReadCount() }}</p>
+    </article>
+  </section>
+
+  <section class="period-form" tuiForm="m">
+    <h3>Period</h3>
+
+    <div class="period-controls">
+      <tui-textfield>
+        <label tuiLabel>From</label>
+        <input tuiTextfield type="date" [value]="store.statsFrom()" (change)="setFrom($any($event.target).value)" />
+      </tui-textfield>
+
+      <tui-textfield>
+        <label tuiLabel>To</label>
+        <input tuiTextfield type="date" [value]="store.statsTo()" (change)="setTo($any($event.target).value)" />
+      </tui-textfield>
+    </div>
+
+    <div class="period-shortcuts">
+      <button type="button" (click)="applyLastDays(7)">Last 7 days</button>
+      <button type="button" (click)="applyLastDays(30)">Last 30 days</button>
+      <button type="button" (click)="applyLastDays(90)">Last 90 days</button>
+    </div>
+  </section>
+
+  <section class="top-genres">
+    <h3>Top genres</h3>
+
+    @if (!store.topGenres().length) {
+      <p class="muted">No genre data yet.</p>
+    } @else {
+      <ol>
+        @for (genre of store.topGenres(); track genre.id) {
+          <li>
+            <span>{{ genre.name }}</span>
+            <strong>{{ genre.count }}</strong>
+          </li>
+        }
+      </ol>
+    }
+  </section>
+</section>
